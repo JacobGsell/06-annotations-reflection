@@ -3,15 +3,24 @@ package ohm.softa.a06.model;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Peter Kurfer
  * Created on 11/9/17.
  */
 public final class Joke {
+	@SerializedName("id")
 	private int number;
+
+	@SerializedName("joke")
 	private String content;
-	private String[] rubrics;
+
+	@SerializedName("categories")
+	private List<String> rubrics;
 
 	public int getNumber() {
 		return number;
@@ -19,6 +28,27 @@ public final class Joke {
 
 	public String getContent() {
 		return content;
+	}
+
+	public Joke() {
+		number = -1;
+		content = "Not correctly deserialized";
+		rubrics = new LinkedList<>();
+	}
+
+	public void setNumber()
+	{
+		this.number = number;
+	}
+
+	public void setContent()
+	{
+		this.content = content;
+	}
+
+	public void setRubrics()
+	{
+		this.rubrics = rubrics;
 	}
 
 	@Override
