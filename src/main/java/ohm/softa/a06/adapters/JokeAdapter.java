@@ -40,9 +40,6 @@ public class JokeAdapter extends TypeAdapter<Joke> {
 
 				case "value":
 					result = gson.fromJson(in, Joke.class);
-
-				default:
-					throw new IllegalStateException("Unexpected value: " + in.nextName());
 			}
 		}
 

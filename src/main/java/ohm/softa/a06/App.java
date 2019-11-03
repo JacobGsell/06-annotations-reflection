@@ -5,48 +5,39 @@ import com.google.gson.GsonBuilder;
 import ohm.softa.a06.model.Joke;
 import ohm.softa.a06.adapters.JokeAdapter;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
  * @author Peter Kurfer
  * Created on 11/10/17.
  */
-public class App implements ICNDBApi {
+public class App {
 
-	static final String BASE_URL = "http://api.icndb.com/";
+	public static void main(String[] args) throws IOException{
+		final String BASE_URL = "http://api.icndb.com/";
 
-	Gson gson = new GsonBuilder().setLenient().create();
 
-	Retrofit.Builder builder = new Retrofit.Builder()
-			.baseUrl(BASE_URL)
-			.addConverterFactory(GsonConverterFactory.create());
+		Gson gson = new GsonBuilder()
+			.registerTypeAdapter(Joke.class, new JokeAdapter())
+			.create();
 
-	public static void main(String[] args) {
-		// TODO fetch a random joke and print it to STDOUT
-		Gson gson = new Gson();
+		Retrofit retrofit = new Retrofit.Builder()
+			.addConverterFactory(GsonConverterFactory.create(gson))
+			.baseUrl("http://api.icndb.com")
+			.build();
 
-		Joke j = gson.fromJson("{'id': 0, 'joke': 'Haha'}", Joke.class);
+		ICNDBApi icndbApi = retrofit.create(ICNDBApi.class);
 
-		String json = gson.toJson(j);
+		// SETUP END
 
-		System.out.println(json);
+		Joke j = icndbApi.getRandomJoke().execute().body();
+
+		System.out.println(j);
 	}
 
-	@Override
-	public Call<Joke> getRandomJoke() {
-		return null;
-	}
-
-	@Override
-	public Call<List<Joke>> getRandomJokes() {
-		return null;
-	}
-
-	@Override
-	public Call<Joke> getJokeById(int number) {
-		return null;
-	}
 }
